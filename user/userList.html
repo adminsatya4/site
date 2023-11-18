@@ -16,7 +16,7 @@
           integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
-<link href="https://adminsatya4.github.io/site/assets/libs/select2/select2.min.css" rel="stylesheet" type="text/css"/>
+<link href="https://adminsatya4.github.io/site/assets/libs/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
 
 <!-- Bootstrap Css -->
 <link href="https://adminsatya4.github.io/site/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
@@ -84,14 +84,52 @@
                 <div class="dropdown-menu dropdown-menu-end">
                     <!-- item-->
 
-                    <a class="dropdown-item d-block" href="#" data-bs-toggle="modal"
-                       data-bs-target=".change-password"><i class="bx bx-wrench font-size-16 align-middle me-1"></i> <span>Change Password</span></a>
-
-                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-danger" href="javascript:void();" onclick="logout()"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Logout</span></a>
 
                     <!-- Your existing HTML elements for Firebase authentication (initialize Firebase SDK, login form, etc.) -->
-                     </div>
+
+                    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js"></script>
+                    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js"></script>
+                    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js"></script>
+
+                    <!-- Your custom JavaScript code -->
+                    <script type="module" src="https://adminsatya4.github.io/site/services/firebase.js"></script>
+                    <script type="module">
+                        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+                        import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+                      
+                        // Firebase configuration
+                        const firebaseConfig = {
+                            apiKey: "AIzaSyAlFTh8-NAvYR1gj20NM2H9mjA-POBMhzs",
+  authDomain: "kalyanmatka-9044f.firebaseapp.com",
+  projectId: "kalyanmatka-9044f",
+  storageBucket: "kalyanmatka-9044f.appspot.com",
+  messagingSenderId: "853065689226",
+  appId: "1:853065689226:web:b5d2107e066c8b1c376573",
+  measurementId: "G-7GZSPMY8D5"
+                        };
+                      
+                        // Initialize Firebase
+                        const app = initializeApp(firebaseConfig);
+                        const auth = getAuth(app);
+                      
+                        // Function to handle Firebase logout
+                        window.logout = function(){
+                          signOut(auth)
+                            .then(() => {
+                              // Sign-out successful. Redirect or perform any additional actions here.
+                              window.location.href = "https://adminsatya4.github.io/site/";
+                              console.log("User signed out successfully");
+                            })
+                            .catch(error => {
+                              // An error happened. Handle the error here.
+                              console.error("Error during logout:", error);
+                            });
+                        }
+                      
+                        // Your existing code for handling authentication (login, etc.)
+                      </script>
+                </div>
             </div>
 
             <div class="dropdown d-inline-block">
@@ -164,12 +202,17 @@
                             <span>Home</span>
                         </a>
                     </li>
+    
+    
                     <li>
                         <a href="https://adminsatya4.github.io/site/user/userList.html" class="waves-effect">
                             <i class="bx bxs-user-detail"></i>
                             <span>User Management</span>
                         </a>
                     </li>
+    
+    
+                    
     
                 </ul>
             </div>
@@ -184,45 +227,24 @@
             <div class="page-content">
 
                 <div class="container-fluid">
-                        <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-12 col-xl-12">
-                <div class="row">
-                    <div class="col-sm-12 col-md-12 col-xl-12">
-                        <div class="card">
-                            <div class="card-header">
-                            </div>
-                            <div class="card-body">
-                                <form id="contact">
-                                        
-                                        <div class="form-group col-md-4">
-                                            <label class="col-form-label"><strong>Whatsapp Number</strong></label>
-                                            <input type="text" class="form-control"
-                                                   placeholder="Enter Whatsapp Number"
-                                                   name="whatsapp" id="whatsapp">
-                                        </div>
+                        <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mb-0 font-size-18">User List</h4>
 
-                                        <div class="form-group col-md-4">
-                                            <label class="col-form-label"><strong>Telegram</strong></label>
-                                            <input type="text" class="form-control"
-                                                   placeholder="Enter Telegram"
-                                                   name="telegram" id="telegram">
-                                        </div>
-
-                                        <div class="form-group mt-4 ">
-                                            <button type="submit" class="btn btn-primary waves-light m-t-10" id="submitBtn"
-                                                    name="submitBtn">Submit
-                                            </button>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <div id="errormsg"></div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                <div class="table-responsive">
+                    <table id="userList" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>User Name</th>
+                            <th>Mobile</th>
+                            <th>Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -312,47 +334,6 @@
 <script src="https://adminsatya4.github.io/site/assets/libs/metismenu/metismenu.min.js"></script>
 <script src="https://adminsatya4.github.io/site/assets/libs/simplebar/simplebar.min.js"></script>
 <script src="https://adminsatya4.github.io/site/assets/libs/node-waves/node-waves.min.js"></script>
-<script type="module" src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js"></script>
-<script type="module" src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js"></script>
-<script type="module" src="https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js"></script>
-
-<!-- Your custom JavaScript code -->
-<script type="module" src="https://adminsatya4.github.io/site/services/firebase.js"></script>
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
-    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
-    import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
-
-    // Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyAlFTh8-NAvYR1gj20NM2H9mjA-POBMhzs",
-  authDomain: "kalyanmatka-9044f.firebaseapp.com",
-  projectId: "kalyanmatka-9044f",
-  storageBucket: "kalyanmatka-9044f.appspot.com",
-  messagingSenderId: "853065689226",
-  appId: "1:853065689226:web:b5d2107e066c8b1c376573",
-  measurementId: "G-7GZSPMY8D5"
-    };
-    
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    // Function to handle Firebase logout
-    window.logout = function(){
-        signOut(auth)
-        .then(() => {
-            // Sign-out successful. Redirect or perform any additional actions here.
-            window.location.href = "https://adminsatya4.github.io/site/";
-            console.log("User signed out successfully");
-        })
-        .catch(error => {
-            // An error happened. Handle the error here.
-            console.error("Error during logout:", error);
-        });
-    }
-    
-    // Your existing code for handling authentication (login, etc.)
-    </script>
 <script>
     document.getElementById("change-password").addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -360,7 +341,7 @@
         const newPassword = formData.get("password");
 
             try {
-                const response = await fetch("https://km-adj5.onrender.com/changem", {
+                const response = await fetch("https://km-adj5.onrender.com/change", {
                     method: "POST",
                     body: formData,
                 });
@@ -376,60 +357,55 @@
             }
     });
 </script>
-<script>
-    document.getElementById("contact").addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-
-            try {
-                const response = await fetch("https://km-adj5.onrender.com/contactm", {
-                    method: "POST",
-                    body: formData,
-                });
-
-                if (response.ok) {
-                    window.location.href = "https://adminsatya4.github.io/site/dashboard";
-                    console.log("Settings Updated");
-                } else {
-                    console.error("Failed");
-                }
-            } catch (error) {
-                console.error("Error :", error);
-            }
-    });
-</script>
-
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
-    import {  getFirestore, collection, doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
+    import {  getFirestore, collection,doc, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
 
     // 
 // Function to fetch data from Firestore and populate the form fields
     async function populateFormFields() {
         const firebaseConfig = {
             apiKey: "AIzaSyAlFTh8-NAvYR1gj20NM2H9mjA-POBMhzs",
-            authDomain: "kalyanmatka-9044f.firebaseapp.com",
-            projectId: "kalyanmatka-9044f",
-            storageBucket: "kalyanmatka-9044f.appspot.com",
-            messagingSenderId: "853065689226",
-            appId: "1:853065689226:web:b5d2107e066c8b1c376573",
-            measurementId: "G-7GZSPMY8D5"
+  authDomain: "kalyanmatka-9044f.firebaseapp.com",
+  projectId: "kalyanmatka-9044f",
+  storageBucket: "kalyanmatka-9044f.appspot.com",
+  messagingSenderId: "853065689226",
+  appId: "1:853065689226:web:b5d2107e066c8b1c376573",
+  measurementId: "G-7GZSPMY8D5"
         };
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        const settingsRef = doc(db, 'setting2', '0b5HNMH5t9bZRpLCYaoLCcUUMM93'); // Replace with your document ID
+        const db = getFirestore(app);                            
 
         try {
-            const docSnap = await getDoc(settingsRef);
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                // Populate form fields with data from Firebase
-                document.getElementById('whatsapp').value = data.w_no || '';
-                document.getElementById('telegram').value = data.telegram || '';
-            } else {
-                console.log('No such document!');
-            }
+                const settingsRef = collection(db, 'user2');
+                const q = query(settingsRef);
+                const querySnapshot = await getDocs(q);
+                const tableBody = document.getElementById('userList').getElementsByTagName('tbody')[0];
+                tableBody.innerHTML = ''; // Clear the table body before populating new data
+        
+                let rowNumber = 1;
+                if (!querySnapshot.empty) {
+                     
+                
+                querySnapshot.forEach(doc => {
+                    const data = doc.data();
+                    const {userId, username, phone, createdTimestamp, userCredits } = data;
+                    const newRow = tableBody.insertRow();
+                    
+                    const cellNumber = newRow.insertCell();
+                    const cellusername = newRow.insertCell();
+                    const cellphone = newRow.insertCell();
+                    const celltime = newRow.insertCell();
+                    const cellbalance = newRow.insertCell();
+                    const cellAction = newRow.insertCell();
+
+                    cellNumber.textContent = rowNumber++;
+                    cellusername.textContent = username;
+                    cellphone.textContent = phone;
+                    celltime.textContent = createdTimestamp.toDate().toDateString().substring(0,11);
+                    
+            });
+        }
         } catch (error) {
             console.error('Error getting document:', error);
         }   
@@ -440,9 +416,9 @@
 
 </script>
 
-    <script src="https://adminsatya4.github.io/site/assets/js/custom.js"></script>
+    <script src="https://adminsatya4.github.io/site/assets/js/pages/datatables.init.js"></script>
+    <script src="https://adminsatya4.github.io/site/assets/libs/datatables/datatables.min.js"></script>
     <script src="https://adminsatya4.github.io/site/assets/js/pages/dashboard.init.js"></script>
-    <script src="https://adminsatya4.github.io/site/assets/libs/select2/select2.min.js"></script>
 
 <!-- App js -->
 <script src="https://adminsatya4.github.io/site/assets/js/app.min.js"></script>
